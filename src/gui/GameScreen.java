@@ -12,7 +12,7 @@ import game.GameMap;
 import game.Player;
 
 public class GameScreen extends JComponent implements Runnable{
-	int width, height;
+	public static int width, height;
 	List<Drawable> sprites;
 	GameMap gm;
 	
@@ -74,12 +74,6 @@ public class GameScreen extends JComponent implements Runnable{
 		for(Drawable d : sprites) {
 			d.draw(g);
 		}
-		int fdx = -width/2 + 5*Drawable.SCALE;
-		int fdy = -height/2 + 5*Drawable.SCALE;
-		
-		g.translate(fdx, fdy);
-		gm.getFont().draw(g, "test test");
-		g.translate(-fdx, -fdy);
 		
 		g.translate(dx, dy);
 		

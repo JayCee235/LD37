@@ -18,7 +18,12 @@ public class Tile implements Drawable{
 	public static final int DIRT = 1;
 	public static final int BABY_WHEAT = 2;
 	public static final int WHEAT = 3;
-	public static final Image[] SPRITES = new Image[4];
+	public static final int HAY = 4;
+	public static final int SNOW = 5;
+	public static final int FLOOR = 6;
+	public static final int BABY_TREE = 7;
+	public static final int TREE = 8;
+	public static final Image[] SPRITES = new Image[9];
 	
 	int type;
 	int dmg;
@@ -37,6 +42,11 @@ public class Tile implements Drawable{
 		paths[1] = b+"testFarm"+a;
 		paths[2] = b+"babyWheat"+a;
 		paths[3] = b+"wheat"+a;
+		paths[4] = b+"hay"+a;
+		paths[5] = b+"snow"+a;
+		paths[6] = b+"floor"+a;
+		paths[7] = b+"babyTree"+a;
+		paths[8] = b+"tree"+a;
 		
 		try {
 			for(int i = 0; i < SPRITES.length; i++) {
@@ -68,9 +78,41 @@ public class Tile implements Drawable{
 					type = WHEAT;
 				}
 			}
+		case WHEAT:
+			break;
+		case HAY:
+			if(dmg > 5) {
+				dmg = 0;
+				type = DIRT;
+			}
+			
+			break;
+		case SNOW:
+			break;
+		case FLOOR:
+			if(dmg > 0) {
+				dmg = 0;
+				type = DIRT;
+			}
+			break;
+		case BABY_TREE:
+			if(Math.random() < 0.05) {
+				dmg++;
+				if(dmg > 100) {
+					dmg = 0;
+					type = TREE;
+				}
+			}
+			break;
+		case TREE:
+			break;
 		default:
 				
 		}
+	}
+	
+	public boolean isOutside() {
+		return !(type == HAY || type == FLOOR);
 	}
 	
 	public void draw(Graphics g) {

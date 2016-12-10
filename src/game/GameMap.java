@@ -14,7 +14,12 @@ public class GameMap implements Drawable {
 	
 	Font f;
 	
+	int timeLeft;
+	
 	public GameMap(int x, int y) {
+		
+		timeLeft = 3000;
+		
 		tiles = new Tile[x][y];
 		c = new Player("./res/testChar.png");
 		c.x = 10;
@@ -34,12 +39,31 @@ public class GameMap implements Drawable {
 	}
 
 	public void tick() {
+		if(timeLeft > 0) timeLeft--;
+		if(timeLeft == 0) {
+			for(int i = 0; i < 5; i++) {
+			int rx = (int) (tiles.length * Math.random());
+			int ry = (int) (tiles[0].length * Math.random());
+			
+			Tile use = tiles[rx][ry];
+			if(use.isOutside()) {
+				use.type = Tile.SNOW;
+			} else {
+				if(rx == 0 || ry == 0 || rx == tiles.length-1 || ry == tiles[0].length-1 ||
+						tiles[rx-1][ry].isOutside() || tiles[rx+1][ry].isOutside() || tiles[rx][ry-1].isOutside() || tiles[rx][ry+1].isOutside()) {
+					use.dmg++;
+				}
+			}
+			timeLeft = 5;
+			}
+		}
 		for(int i = 0; i < tiles.length; i++) {
 			for(int j = 0; j < tiles[0].length; j++) {
 				tiles[i][j].tick();
 			}
 		}
 		this.c.tick();
+		
 	}
 	
 	public Player getChar() {
