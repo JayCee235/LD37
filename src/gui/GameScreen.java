@@ -12,6 +12,7 @@ public class GameScreen extends JComponent{
 	int width, height;
 	List<Drawable> sprites;
 	
+	
 	public GameScreen(int width, int height) {
 		sprites = new LinkedList<Drawable>();
 		this.width = width;
@@ -23,6 +24,10 @@ public class GameScreen extends JComponent{
 		this.setMaximumSize(s);
 		this.setPreferredSize(s);
 		
+	}
+	
+	public void addSprite(Drawable d) {
+		this.sprites.add(d);
 	}
 	
 	@Override
