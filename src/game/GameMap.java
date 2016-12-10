@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gui.Drawable;
+import gui.Font;
 
 public class GameMap implements Drawable {
 	Tile[][] tiles;
 	
 	Player c;
+	
+	Font f;
 	
 	public GameMap(int x, int y) {
 		tiles = new Tile[x][y];
@@ -23,6 +26,11 @@ public class GameMap implements Drawable {
 				tiles[i][j] = new Tile(Tile.GRASS);
 			}
 		}
+		f = new Font("./res/font.png", "abcdefghijklmnopqrstuvwxyz?!. 1234567890", 1, 8, 10, 4);
+	}
+	
+	public Font getFont() {
+		return f;
 	}
 
 	public void tick() {

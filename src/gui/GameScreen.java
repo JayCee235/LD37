@@ -68,13 +68,22 @@ public class GameScreen extends JComponent implements Runnable{
 	public void paintComponent(Graphics g) {
 		int dx = getChar().x * Drawable.SCALE - width/2 + 4*Drawable.SCALE;
 		int dy = getChar().y * Drawable.SCALE - height/2 + 4*Drawable.SCALE;
-		g.setColor(Color.BLACK);
+		g.setColor(Color.CYAN);
 		g.fillRect(0, 0, width, height);
 		g.translate(-dx, -dy);
 		for(Drawable d : sprites) {
 			d.draw(g);
 		}
+		int fdx = -width/2 + 5*Drawable.SCALE;
+		int fdy = -height/2 + 5*Drawable.SCALE;
+		
+		g.translate(fdx, fdy);
+		gm.getFont().draw(g, "test test");
+		g.translate(-fdx, -fdy);
+		
 		g.translate(dx, dy);
+		
+		
 	}
 
 }
