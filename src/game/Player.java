@@ -27,6 +27,8 @@ public class Player implements Drawable, KeyListener, MouseListener{
 	int tool;
 	int maxTool = 5;
 	
+	int health = 100;
+	
 	int[] seeds;
 	int[] crops;
 	
@@ -161,7 +163,7 @@ public class Player implements Drawable, KeyListener, MouseListener{
 		}
 		
 		if(showCrops) {
-			int ff = crops.length + 1;
+			int ff = crops.length + 2;
 			int cropx = 9*Drawable.SCALE;
 			g.translate(0, cropx);
 			gm.getFont().draw(g, "Wheat " + crops[0]);
@@ -171,6 +173,13 @@ public class Player implements Drawable, KeyListener, MouseListener{
 			
 			g.translate(0, cropx);
 			gm.getFont().draw(g, "Time Left " + gm.timeLeft / 100);
+			
+			g.translate(0, cropx);
+			if(health <= 0) {
+				gm.getFont().draw(g, "Game Over");
+			} else {
+				gm.getFont().draw(g, "Health " + health);
+			}
 						
 			g.translate(0, -cropx*ff);
 		}
@@ -331,6 +340,10 @@ public class Player implements Drawable, KeyListener, MouseListener{
 		if(y >= -8 + gm.tiles[0].length*8) {
 			y = -8+gm.tiles[0].length*8;
 		}
+		if(getTileOn().type == Tile.SNOW) {
+			health--;
+		}
+		
 	}
 
 	@Override
