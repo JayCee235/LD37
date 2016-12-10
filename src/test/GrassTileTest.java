@@ -8,7 +8,7 @@ public class GrassTileTest {
 	public static void main(String[] args) {
 		Window w = new Window("test");
 		GameScreen gs = new GameScreen(800, 600);
-		GameMap gm = new GameMap(20, 20);
+		GameMap gm = new GameMap(30, 30);
 		
 		gs.addSprite(gm);
 		gs.addGameMap(gm);

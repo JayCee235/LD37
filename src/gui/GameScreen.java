@@ -44,11 +44,19 @@ public class GameScreen extends JComponent implements Runnable{
 	
 	public void run() {
 		while(true) {
+			long time = System.currentTimeMillis();
 			this.gm.tick();
 			this.repaint();
 			
+			long last = time;
+			time = System.currentTimeMillis();
 			try {
-				Thread.sleep(1000/60);
+				long runTime = time - last;
+				long timeSleep = 1000/60 - runTime;
+				if(timeSleep < 0) {
+					timeSleep = 0;
+				}
+				Thread.sleep(timeSleep);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -58,11 +66,15 @@ public class GameScreen extends JComponent implements Runnable{
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		int dx = getChar().x * Drawable.SCALE - width/2 + 4*Drawable.SCALE;
+		int dy = getChar().y * Drawable.SCALE - height/2 + 4*Drawable.SCALE;
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
+		g.translate(-dx, -dy);
 		for(Drawable d : sprites) {
 			d.draw(g);
 		}
+		g.translate(dx, dy);
 	}
 
 }

@@ -26,6 +26,11 @@ public class GameMap implements Drawable {
 	}
 
 	public void tick() {
+		for(int i = 0; i < tiles.length; i++) {
+			for(int j = 0; j < tiles[0].length; j++) {
+				tiles[i][j].tick();
+			}
+		}
 		this.c.tick();
 	}
 	
@@ -60,6 +65,7 @@ public class GameMap implements Drawable {
 		int cy = y / Tile.HEIGHT;
 		
 		tiles[cx][cy].type = type;
+		tiles[cx][cy].dmg = 0;
 	}
 	
 }

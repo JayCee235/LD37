@@ -14,13 +14,15 @@ import javax.imageio.ImageIO;
 import gui.Drawable;
 
 public class Player implements Drawable, KeyListener, MouseListener{
-	int x, y, w, h;
+	public int x, y, w, h;
 	int mx, my;
 	Image sprite;
 	GameMap gm;
 	
 	int cap = 0;
-	int farmTimer = 0;
+	
+	int tool;
+	int maxTool = 1;
 	
 	boolean[] keysDown;
 	
@@ -29,6 +31,7 @@ public class Player implements Drawable, KeyListener, MouseListener{
 		this.y = 0;
 		this.mx = 0;
 		this.my = 0;
+		tool = 0;
 		
 		this.keysDown = new boolean[255];
 		try {
@@ -57,9 +60,6 @@ public class Player implements Drawable, KeyListener, MouseListener{
 	}
 	
 	public void tick() {
-		if(farmTimer > 0) {
-			farmTimer--;
-		}
 		if(keysDown[KeyEvent.VK_W]) {
 			this.my--;
 			if(my < -cap) {
@@ -89,11 +89,20 @@ public class Player implements Drawable, KeyListener, MouseListener{
 			}
 		}
 		if(keysDown[KeyEvent.VK_SPACE]) {
-			if(getTileOn().type == Tile.GRASS) {
-				setTileOn(Tile.DIRT);
-				farmTimer = 10;
+			//Till
+			if(tool == 0) {
+				if(getTileOn().type == Tile.GRASS) {
+					setTileOn(Tile.DIRT);
+				}
+			}
+			//Wheat
+			if(tool == 1) {
+				if(getTileOn().type == Tile.DIRT) {
+					setTileOn(Tile.BABY_WHEAT);
+				}
 			}
 		}
+		
 		if(x < 0) {
 			x = 0;
 		}
@@ -101,10 +110,10 @@ public class Player implements Drawable, KeyListener, MouseListener{
 			y = 0;
 		}
 		if(x > -8 + gm.tiles.length*8) {
-			x = 8+gm.tiles.length*8;
+			x = -8+gm.tiles.length*8;
 		}
 		if(y > -8 + gm.tiles[0].length*8) {
-			y = 8+gm.tiles[0].length*8;
+			y = -8+gm.tiles[0].length*8;
 		}
 	}
 
@@ -149,6 +158,12 @@ public class Player implements Drawable, KeyListener, MouseListener{
 		int code = e.getKeyCode();
 		if(code >= 0 && code < 255) {
 			keysDown[code] = true;
+		}
+		if(code == KeyEvent.VK_J) {
+			tool++;
+			if(tool > maxTool) {
+				tool = 0;
+			}
 		}
 	}
 
