@@ -10,8 +10,10 @@ public class GrassTileTest {
 		GameScreen gs = new GameScreen(800, 600);
 		GameMap gm = new GameMap(20, 20);
 		
-		w.add(gs);
 		gs.addSprite(gm);
+		gs.addGameMap(gm);
+		
+		w.add(gs);
 		
 		w.display();
 	}

@@ -8,9 +8,13 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
-public class GameScreen extends JComponent{
+import game.GameMap;
+import game.Player;
+
+public class GameScreen extends JComponent implements Runnable{
 	int width, height;
 	List<Drawable> sprites;
+	GameMap gm;
 	
 	
 	public GameScreen(int width, int height) {
@@ -26,8 +30,30 @@ public class GameScreen extends JComponent{
 		
 	}
 	
+	public Player getChar() {
+		return this.gm.getChar();
+	}
+	
+	public void addGameMap(GameMap gm) {
+		this.gm = gm;
+	}
+	
 	public void addSprite(Drawable d) {
 		this.sprites.add(d);
+	}
+	
+	public void run() {
+		while(true) {
+			this.gm.tick();
+			this.repaint();
+			
+			try {
+				Thread.sleep(1000/60);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override

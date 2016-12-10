@@ -8,25 +8,31 @@ import gui.Drawable;
 
 public class GameMap implements Drawable {
 	Tile[][] tiles;
-	Map<String, Tile> tileTypes;
 	
-	Character c;
+	Player c;
 	
 	public GameMap(int x, int y) {
 		tiles = new Tile[x][y];
-		tileTypes = new HashMap<String, Tile>();
-		tileTypes.put("testGrass", new TestGrassTile("./res/testGrass.png"));
-		c = new Character("./res/testChar.png");
+		c = new Player("./res/testChar.png");
 		c.x = 10;
 		c.y = 10;
+		c.gm = this;
 		
 		for(int i = 0; i < x; i++) {
 			for(int j = 0; j < y; j++) {
-				tiles[i][j] = tileTypes.get("testGrass");
+				tiles[i][j] = new Tile(Tile.GRASS);
 			}
 		}
 	}
 
+	public void tick() {
+		this.c.tick();
+	}
+	
+	public Player getChar() {
+		return this.c;
+	}
+	
 	@Override
 	public void draw(Graphics g) {
 		for(int i = 0; i < tiles.length; i++) {
@@ -43,10 +49,17 @@ public class GameMap implements Drawable {
 	}
 	
 	public Tile getTile(int x, int y) {
-		int cx = x / Tile.WIDTH / Drawable.SCALE;
-		int cy = y / Tile.HEIGHT / Drawable.SCALE;
+		int cx = x / Tile.WIDTH;
+		int cy = y / Tile.HEIGHT;
 		
 		return tiles[cx][cy];
+	}
+	
+	public void setTile(int type, int x, int y) {
+		int cx = x / Tile.WIDTH;
+		int cy = y / Tile.HEIGHT;
+		
+		tiles[cx][cy].type = type;
 	}
 	
 }
