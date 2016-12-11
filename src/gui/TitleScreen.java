@@ -19,7 +19,7 @@ public class TitleScreen implements Drawable, KeyListener{
 	public TitleScreen(Window w) {
 		this.w = w;
 		timer = 100;
-		f = new Font("./res/font.png", "abcdefghijklmnopqrstuvwxyz?!. 1234567890", 1, 8, 10, 4);
+		f = new Font("/res/font.png", "abcdefghijklmnopqrstuvwxyz?!. 1234567890", 1, 8, 10, 4);
 		xx = 50;
 		yy = 20;
 		tiles = new Tile[xx][yy];

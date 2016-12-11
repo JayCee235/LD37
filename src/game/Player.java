@@ -47,7 +47,8 @@ public class Player implements Drawable, KeyListener {
 	
 	public List<Drawable> hud;
 	
-	AudioPlayer place, plant;
+	AudioPlayer place, plant, harvest, till;
+	public int cx, cy;
 	
 	public Player(String spritePath) {
 		this.x = 0;
@@ -55,6 +56,8 @@ public class Player implements Drawable, KeyListener {
 		this.mx = 0;
 		this.my = 0;
 		tool = 0;
+		this.cx = 0;
+		this.cy = 0;
 		
 		facing  = 3;
 		
@@ -74,11 +77,13 @@ public class Player implements Drawable, KeyListener {
 		
 		this.keysDown = new boolean[255];
 		try {
-			sprite = ImageIO.read(new File(spritePath));
-			selector = ImageIO.read(new File("./res/selector.png"));
+			sprite = ImageIO.read(this.getClass().getResource(spritePath));
+			selector = ImageIO.read(this.getClass().getResourceAsStream("/res/selector.png"));
 			
-			place = new AudioPlayer("./res/placementSound.wav");
-			plant = new AudioPlayer("./res/plantSound.wav");
+			place = new AudioPlayer("/res/placementSound.wav");
+			plant = new AudioPlayer("/res/plantSound.wav");
+			harvest = new AudioPlayer("/res/harvestSound.wav");
+			till = new AudioPlayer("/res/tillSound.wav");
 		} catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
 			e.printStackTrace();
 		}
@@ -152,14 +157,15 @@ public class Player implements Drawable, KeyListener {
 	
 	@Override
 	public void draw(Graphics g) {
-		
-		int dx = x * Drawable.SCALE;
-		int dy = y * Drawable.SCALE;
+		int dx = cx * Drawable.SCALE;
+		int dy = cy * Drawable.SCALE;
 		int pdx = ((x+4)/8)*8 * Drawable.SCALE;
-		int pdy = ((y+4)/8)*8 * Drawable.SCALE;
+		int pdy = ((y+4)/8)*8 * Drawable.SCALE;		
 		
 		int ddx = pdx - dx;
 		int ddy = pdy - dy;
+		
+//		dx = 0; dy = 0;		
 		
 		g.translate(dx, dy);
 		
@@ -306,87 +312,8 @@ public class Player implements Drawable, KeyListener {
 				if(!contains(walkable, getTileOn().type)) x--;
 			}
 		}
-		if(keysDown[KeyEvent.VK_SPACE] && getSelectedTile() != null) {
-			//Till
-			if(tool == 0) {
-				if(getSelectedTile().type == Tile.GRASS) {
-					setSelectedTile(Tile.DIRT);
-				}
-			}
-			//Harvest
-			if(tool == 1) {
-				if(getSelectedTile().type == Tile.WHEAT) {
-					setSelectedTile(Tile.DIRT);
-					seeds[0] += 2;
-					crops[0] += 3;
-				} else if(getSelectedTile().type == Tile.TREE) {
-					setSelectedTile(Tile.DIRT);
-					seeds[1] += 5;
-					crops[1] += 15;
-				} else if(getSelectedTile().type == Tile.HAY) {
-					setSelectedTile(Tile.DIRT);
-					crops[0] += 4;
-				} else if(getSelectedTile().type == Tile.FLOOR) {
-					setSelectedTile(Tile.DIRT);
-					crops[1] += 4;
-				} else if(getSelectedTile().type == Tile.SNOW) {
-					getSelectedTile().dmg++;
-				}
-			}
-			//Wheat
-			if(tool == 2) {
-				if(getSelectedTile().type == Tile.DIRT && seeds[0] > 0) {
-					setSelectedTile(Tile.BABY_WHEAT);
-					seeds[0]--;
-					try {
-						plant.play();
-					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-			//Tree
-			if(tool == 3) {
-				if((getSelectedTile().type == Tile.DIRT || getSelectedTile().type == Tile.GRASS) && seeds[1] > 0) {
-					setSelectedTile(Tile.BABY_TREE);
-					seeds[1]--;
-					try {
-						plant.play();
-					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-			//Place Hay
-			if(tool == 4) {
-				int t = getSelectedTile().type;
-				if((t == Tile.DIRT || t == Tile.GRASS) && crops[0] >= 4) {
-					setSelectedTile(Tile.HAY);
-					crops[0] -= 4;
-					try {
-						place.play();
-					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}				
-			}
-			//Place Floor
-			if(tool == 5) {
-				int t = getSelectedTile().type;
-				if((t == Tile.DIRT || t == Tile.GRASS) && crops[1] >= 4) {
-					setSelectedTile(Tile.FLOOR);
-					crops[1] -= 4;
-					try {
-						place.play();
-					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}				
-			}
+		if(keysDown[KeyEvent.VK_SPACE]) {
+			performAction();
 		}
 		
 		if(x <= 0) {
@@ -453,6 +380,123 @@ public class Player implements Drawable, KeyListener {
 		int code = e.getKeyCode();
 		if(code >= 0 && code < 255) {
 			keysDown[code] = false;
+		}
+	}
+
+	public void performAction() {
+		Tile t = getSelectedTile();
+		if(t == null) {
+			return;
+		}
+		//Till
+		if(tool == 0) {
+			if(t.type == Tile.GRASS) {
+				setSelectedTile(Tile.DIRT);
+				try {
+					till.play();
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		//Harvest
+		if(tool == 1) {
+			if(t.type == Tile.WHEAT) {
+				setSelectedTile(Tile.DIRT);
+				seeds[0] += 2;
+				crops[0] += 3;
+				try {
+					harvest.play();
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else if(t.type == Tile.TREE) {
+				setSelectedTile(Tile.DIRT);
+				seeds[1] += 5;
+				crops[1] += 15;
+				try {
+					harvest.play();
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else if(t.type == Tile.HAY) {
+				setSelectedTile(Tile.DIRT);
+				crops[0] += 4;
+				try {
+					harvest.play();
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else if(t.type == Tile.FLOOR) {
+				setSelectedTile(Tile.DIRT);
+				crops[1] += 4;
+				try {
+					harvest.play();
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else if(getSelectedTile().type == Tile.SNOW) {
+				getSelectedTile().dmg++;
+			}
+		}
+		//Wheat
+		if(tool == 2) {
+			if(t.type == Tile.DIRT && seeds[0] > 0) {
+				setSelectedTile(Tile.BABY_WHEAT);
+				seeds[0]--;
+				try {
+					plant.play();
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		//Tree
+		if(tool == 3) {
+			if((t.type == Tile.DIRT || t.type == Tile.GRASS) && seeds[1] > 0) {
+				setSelectedTile(Tile.BABY_TREE);
+				seeds[1]--;
+				try {
+					plant.play();
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		//Place Hay
+		if(tool == 4) {
+			int type = t.type;
+			if((type == Tile.DIRT || type == Tile.GRASS) && crops[0] >= 4) {
+				setSelectedTile(Tile.HAY);
+				crops[0] -= 4;
+				try {
+					place.play();
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}				
+		}
+		//Place Floor
+		if(tool == 5) {
+			int type = t.type;
+			if((type == Tile.DIRT || type == Tile.GRASS) && crops[1] >= 4) {
+				setSelectedTile(Tile.FLOOR);
+				crops[1] -= 4;
+				try {
+					place.play();
+				} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}				
 		}
 	}
 	

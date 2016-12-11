@@ -23,8 +23,8 @@ public class Button implements Drawable{
 	
 	public Button(String path, String selectPath, int x, int y, int tool) {
 		try {
-			sprite = ImageIO.read(new File(path));
-			selected = ImageIO.read(new File(selectPath));
+			sprite = ImageIO.read(this.getClass().getResource(path));
+			selected = ImageIO.read(this.getClass().getResource(selectPath));
 			w = sprite.getWidth(null);
 			h = sprite.getHeight(null);			
 		} catch (IOException e) {

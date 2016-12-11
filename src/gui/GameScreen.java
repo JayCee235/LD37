@@ -30,6 +30,7 @@ public class GameScreen extends JComponent implements Runnable, MouseListener{
 	boolean running;
 	
 	private AudioPlayer music;
+	private boolean shouldPerform;
 	
 	public GameScreen(Window w, int width, int height) {
 		this.w = w;
@@ -44,7 +45,7 @@ public class GameScreen extends JComponent implements Runnable, MouseListener{
 		this.setMaximumSize(s);
 		this.setPreferredSize(s);
 		
-		String pre = "./res/tool";
+		String pre = "/res/tool";
 		String post = ".png";
 		String sel = "Selected";
 		
@@ -59,12 +60,12 @@ public class GameScreen extends JComponent implements Runnable, MouseListener{
 					(width/Drawable.SCALE), 
 					1, i);
 			b.x -= b.w + 2;
-			b.y += i*(b.h + 1);
+			b.y += i*(b.h + 1) - 1;
 			this.buttons.add(b);
 		}
 		
 		try {
-			this.music = new AudioPlayer("./res/Final Harvest.wav");
+			this.music = new AudioPlayer("/res/Final Harvest.wav");
 		} catch (UnsupportedAudioFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,6 +109,7 @@ public class GameScreen extends JComponent implements Runnable, MouseListener{
 		List<Drawable> ds = add.getChar().hud;
 		for(int i = 0; i < buttons.size(); i++) {
 			Button b = buttons.get(i);
+			b.deselect();
 			ds.add(b);
 		}
 		add.getChar().setTool(0);
@@ -151,6 +153,9 @@ public class GameScreen extends JComponent implements Runnable, MouseListener{
 //					w.frame.addKeyListener(ts);
 					w.add(ts);
 				}
+				if(shouldPerform) {
+					c.performAction();
+				}
 			}
 			if(w.ts != null) {
 				w.ts.timer--;
@@ -180,8 +185,14 @@ public class GameScreen extends JComponent implements Runnable, MouseListener{
 		}
 		g.fillRect(0, 0, width, height);
 		if(gm != null) {
-			int dx = getChar().x * Drawable.SCALE - width/2 + 4*Drawable.SCALE;
-			int dy = getChar().y * Drawable.SCALE - height/2 + 4*Drawable.SCALE;
+			int x = getChar().x;
+			int y = getChar().y;
+			
+			getChar().cx = x;
+			getChar().cy = y;
+			
+			int dx = x * Drawable.SCALE - width/2 + 4*Drawable.SCALE;
+			int dy = y * Drawable.SCALE - height/2 + 4*Drawable.SCALE;
 			g.translate(-dx, -dy);
 			for(Drawable d : sprites) {
 				d.draw(g);
@@ -197,27 +208,30 @@ public class GameScreen extends JComponent implements Runnable, MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
 		if(getChar() != null) {
+			boolean hitButton = false;
 			Player p = getChar();
 			for(Button b : this.buttons) {
 				boolean hit = b.inside(e.getX(), e.getY());
+				hitButton = hitButton || hit;
 				if(hit) {
 					p.setTool(b.getData());
 				}
+			}
+			if(!hitButton) {
+				shouldPerform = true;
 			}
 		}
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		shouldPerform = false;
 	}
 
 	@Override

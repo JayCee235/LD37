@@ -1,8 +1,6 @@
 package game;
 
 import java.awt.Graphics;
-import java.util.HashMap;
-import java.util.Map;
 
 import gui.Drawable;
 import gui.Font;
@@ -27,7 +25,7 @@ public class GameMap implements Drawable {
 		snowPerTick = 1;
 		
 		tiles = new Tile[x][y];
-		c = new Player("./res/testChar.png");
+		c = new Player("/res/testChar.png");
 		c.x = 10;
 		c.y = 10;
 		c.gm = this;
@@ -37,7 +35,7 @@ public class GameMap implements Drawable {
 				tiles[i][j] = new Tile(Tile.GRASS);
 			}
 		}
-		f = new Font("./res/font.png", "abcdefghijklmnopqrstuvwxyz?!. 1234567890", 
+		f = new Font("/res/font.png", "abcdefghijklmnopqrstuvwxyz?!. 1234567890", 
 				1, 8, 10, 4);
 	}
 	

@@ -15,6 +15,7 @@ public class Window {
 		this.frame = new JFrame(name);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
 	}
 	
 	public void display() {		
@@ -23,6 +24,7 @@ public class Window {
 		
 		frame.setVisible(true);
 	}
+
 	
 	public void start() {
 		gs.running = false;

@@ -37,7 +37,7 @@ public class Tile implements Drawable{
 	public static void load() {
 		String[] paths = new String[SPRITES.length];
 		
-		String b = "./res/";
+		String b = "/res/";
 		String a = ".png";
 		
 		paths[0] = b+"testGrass"+a;
@@ -52,7 +52,7 @@ public class Tile implements Drawable{
 		
 		try {
 			for(int i = 0; i < SPRITES.length; i++) {
-				SPRITES[i] = ImageIO.read(new File(paths[i]));
+				SPRITES[i] = ImageIO.read(Tile.class.getResource(paths[i]));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

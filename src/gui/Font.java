@@ -17,7 +17,7 @@ public class Font {
 	
 	public Font(String path, String chars, int offset, int size, int w, int h) {
 		try {
-			this.base = ImageIO.read(new File(path));
+			this.base = ImageIO.read(this.getClass().getResource(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
