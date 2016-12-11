@@ -55,11 +55,11 @@ public class Player implements Drawable, KeyListener {
 		seeds = new int[cropType];
 		crops = new int[cropType];
 		
-		seeds[0] = 10;
-		crops[0] = 400;
+		seeds[0] = 16;
+		crops[0] = 0;
 		
-		seeds[1] = 2;
-		crops[1] = 400;
+		seeds[1] = 3;
+		crops[1] = 0;
 		
 		this.keysDown = new boolean[255];
 		try {
@@ -149,10 +149,10 @@ public class Player implements Drawable, KeyListener {
 			toWrite = "Harvest";
 			break;
 		case 2:
-			toWrite = "Wheat " + seeds[0];
+			toWrite = "Wheat Seeds" + seeds[0];
 			break;
 		case 3:
-			toWrite = "Tree " + seeds[1];
+			toWrite = "Saplings " + seeds[1];
 			break;
 		case 4:
 			toWrite = "Place Hay";
@@ -283,7 +283,7 @@ public class Player implements Drawable, KeyListener {
 				if(getSelectedTile().type == Tile.WHEAT) {
 					setSelectedTile(Tile.DIRT);
 					seeds[0] += 2;
-					crops[0] += 5;
+					crops[0] += 3;
 				} else if(getSelectedTile().type == Tile.TREE) {
 					setSelectedTile(Tile.DIRT);
 					seeds[1] += 5;
@@ -344,9 +344,6 @@ public class Player implements Drawable, KeyListener {
 		}
 		if(getTileOn().type == Tile.SNOW) {
 			health--;
-			if(health <= 0) {
-				
-			}
 		}
 		
 	}
@@ -377,6 +374,21 @@ public class Player implements Drawable, KeyListener {
 		}
 		if(code == KeyEvent.VK_L) {
 			showCrops = !showCrops;
+		}
+		if(code == KeyEvent.VK_Y) {
+			tool = 0;
+		}
+		if(code == KeyEvent.VK_U) {
+			tool = 1;
+		}
+		if(code == KeyEvent.VK_I) {
+			tool = 2;
+		}
+		if(code == KeyEvent.VK_O) {
+			tool = 3;
+		}
+		if(code == KeyEvent.VK_P) {
+			tool = 4;
 		}
 	}
 

@@ -100,9 +100,9 @@ public class Tile implements Drawable{
 			}
 			break;
 		case BABY_TREE:
-			if(Math.random() < 0.05) {
+			if(Math.random() < 0.06) {
 				dmg++;
-				if(dmg > 100) {
+				if(dmg > 50) {
 					dmg = 0;
 					type = TREE;
 				}
