@@ -259,39 +259,39 @@ public class Player implements Drawable, KeyListener {
 	
 	public void tick() {
 		if(keysDown[KeyEvent.VK_W]) {
-			this.my--;
+			if (facing == 1) this.my--;
+			facing = 1;
 			if(my < -cap) {
 				my = 0;
 				y--;
 				if(!contains(walkable, getTileOn().type)) y++;
-				facing = 1;
 			}
 		}
 		if(keysDown[KeyEvent.VK_S]) {
-			this.my++;
+			if (facing == 3) this.my++;
+			facing = 3;
 			if(my > cap) {
 				my = 0;
 				y++;
 				if(!contains(walkable, getTileOn().type)) y--;
-				facing = 3;
 			}
 		}
 		if(keysDown[KeyEvent.VK_A]) {
-			this.mx++;
+			if (facing == 0) this.mx++;
+			facing = 0;
 			if(mx > cap) {
 				mx = 0;
 				x--;
 				if(!contains(walkable, getTileOn().type)) x++;
-				facing = 0;
 			}
 		}
 		if(keysDown[KeyEvent.VK_D]) {
-			this.mx--;
+			if (facing == 2) this.mx--;
+			facing = 2;
 			if(mx < -cap) {
 				mx = 0;
 				x++;
 				if(!contains(walkable, getTileOn().type)) x--;
-				facing = 2;
 			}
 		}
 		if(keysDown[KeyEvent.VK_SPACE] && getSelectedTile() != null) {
@@ -330,7 +330,7 @@ public class Player implements Drawable, KeyListener {
 			}
 			//Tree
 			if(tool == 3) {
-				if(getSelectedTile().type == Tile.DIRT && seeds[1] > 0) {
+				if((getSelectedTile().type == Tile.DIRT || getSelectedTile().type == Tile.GRASS) && seeds[1] > 0) {
 					setSelectedTile(Tile.BABY_TREE);
 					seeds[1]--;
 				}
