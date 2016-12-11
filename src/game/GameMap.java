@@ -25,7 +25,7 @@ public class GameMap implements Drawable {
 		snowPerTick = 1;
 		
 		tiles = new Tile[x][y];
-		c = new Player("/res/testChar.png");
+		c = new Player("/res/char.png");
 		c.x = 10;
 		c.y = 10;
 		c.gm = this;

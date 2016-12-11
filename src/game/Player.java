@@ -229,7 +229,7 @@ public class Player implements Drawable, KeyListener {
 		gm.getFont().draw(g, toWrite);
 		g.translate(-fdx, -fdy);
 		
-		g.drawImage(sprite, 0, 0, w*Drawable.SCALE, h*Drawable.SCALE, 0, 0, w, h, null);
+		g.drawImage(sprite, 0, -3*Drawable.SCALE, w*Drawable.SCALE, (h-3)*Drawable.SCALE, 0, 0, w, h, null);
 		
 		g.translate(ddx, ddy);
 		switch(facing) {
