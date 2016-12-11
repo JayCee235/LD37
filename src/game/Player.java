@@ -12,7 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
+import audio.AudioPlayer;
 import gui.Drawable;
 import gui.GameScreen;
 
@@ -44,6 +47,8 @@ public class Player implements Drawable, KeyListener {
 	
 	public List<Drawable> hud;
 	
+	AudioPlayer place, plant;
+	
 	public Player(String spritePath) {
 		this.x = 0;
 		this.y = 0;
@@ -71,7 +76,10 @@ public class Player implements Drawable, KeyListener {
 		try {
 			sprite = ImageIO.read(new File(spritePath));
 			selector = ImageIO.read(new File("./res/selector.png"));
-		} catch (IOException e) {
+			
+			place = new AudioPlayer("./res/placementSound.wav");
+			plant = new AudioPlayer("./res/plantSound.wav");
+		} catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
 			e.printStackTrace();
 		}
 		this.w = 8;
@@ -130,7 +138,7 @@ public class Player implements Drawable, KeyListener {
 	}
 	
 	public void setTool(int t) {
-		((Button) hud.get(tool)).toggleSelect();
+		((Button) hud.get(tool)).deselect();
 		tool = t;
 		while(tool < 0) {
 			tool += maxTool + 1;
@@ -138,7 +146,7 @@ public class Player implements Drawable, KeyListener {
 		while(tool > maxTool) {
 			tool -= maxTool + 1;
 		}
-		((Button) hud.get(tool)).toggleSelect();
+		((Button) hud.get(tool)).select();
 		
 	}
 	
@@ -330,6 +338,12 @@ public class Player implements Drawable, KeyListener {
 				if(getSelectedTile().type == Tile.DIRT && seeds[0] > 0) {
 					setSelectedTile(Tile.BABY_WHEAT);
 					seeds[0]--;
+					try {
+						plant.play();
+					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 			//Tree
@@ -337,6 +351,12 @@ public class Player implements Drawable, KeyListener {
 				if((getSelectedTile().type == Tile.DIRT || getSelectedTile().type == Tile.GRASS) && seeds[1] > 0) {
 					setSelectedTile(Tile.BABY_TREE);
 					seeds[1]--;
+					try {
+						plant.play();
+					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 			//Place Hay
@@ -345,6 +365,12 @@ public class Player implements Drawable, KeyListener {
 				if((t == Tile.DIRT || t == Tile.GRASS) && crops[0] >= 4) {
 					setSelectedTile(Tile.HAY);
 					crops[0] -= 4;
+					try {
+						place.play();
+					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}				
 			}
 			//Place Floor
@@ -353,6 +379,12 @@ public class Player implements Drawable, KeyListener {
 				if((t == Tile.DIRT || t == Tile.GRASS) && crops[1] >= 4) {
 					setSelectedTile(Tile.FLOOR);
 					crops[1] -= 4;
+					try {
+						place.play();
+					} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}				
 			}
 		}

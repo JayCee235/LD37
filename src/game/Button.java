@@ -39,6 +39,14 @@ public class Button implements Drawable{
 		this.isSelected = !this.isSelected;
 	}
 	
+	public void select() {
+		this.isSelected = true;
+	}
+	
+	public void deselect() {
+		this.isSelected = false;
+	}
+	
 	public boolean inside(int cx, int cy) {
 		int dx = cx / Drawable.SCALE;
 		int dy = cy / Drawable.SCALE;

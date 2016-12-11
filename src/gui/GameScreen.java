@@ -5,12 +5,16 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JComponent;
 
+import audio.AudioPlayer;
 import game.Button;
 import game.GameMap;
 import game.Player;
@@ -24,6 +28,8 @@ public class GameScreen extends JComponent implements Runnable, MouseListener{
 	List<Button> buttons;
 	
 	boolean running;
+	
+	private AudioPlayer music;
 	
 	public GameScreen(Window w, int width, int height) {
 		this.w = w;
@@ -56,8 +62,39 @@ public class GameScreen extends JComponent implements Runnable, MouseListener{
 			b.y += i*(b.h + 1);
 			this.buttons.add(b);
 		}
-		buttons.get(0).toggleSelect();
 		
+		try {
+			this.music = new AudioPlayer("./res/Final Harvest.wav");
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void startMusic() {
+		try {
+			music.play();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void stopMusic() {
+		music.stop();
 	}
 	
 	public Player getChar() {
@@ -73,6 +110,9 @@ public class GameScreen extends JComponent implements Runnable, MouseListener{
 			Button b = buttons.get(i);
 			ds.add(b);
 		}
+		add.getChar().setTool(0);
+		
+		startMusic();
 		
 		addSprite(add);
 		addGameMap(add);

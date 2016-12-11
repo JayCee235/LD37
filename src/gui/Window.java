@@ -45,6 +45,7 @@ public class Window {
 		if(this.gs != null) {
 			this.frame.removeKeyListener(this.gs.getChar());
 			this.gs.addSprite(ts);
+			gs.stopMusic();
 		}
 		this.ts = ts;
 		this.frame.addKeyListener(ts);
