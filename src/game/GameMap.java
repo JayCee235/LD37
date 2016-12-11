@@ -14,7 +14,7 @@ public class GameMap implements Drawable {
 	
 	Font f;
 	
-	int timeLeft;
+	public int timeLeft;
 	
 	int snowPerTick;
 	

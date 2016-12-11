@@ -10,7 +10,7 @@ public class TitleScreenTest {
 	public static void main(String[] args) {
 		Tile.load();
 		Window w = new Window("Test");
-		GameScreen gs = new GameScreen(w, 800, 600);
+		GameScreen gs = new GameScreen(w, 1000, 800);
 		
 		TitleScreen ts = new TitleScreen(w);
 		

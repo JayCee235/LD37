@@ -11,13 +11,16 @@ public class TitleScreen implements Drawable, KeyListener{
 	Tile[][] tiles;
 	Font f;
 	Window w;
+	int xx, yy;
 	
 	public TitleScreen(Window w) {
 		this.w = w;
 		f = new Font("./res/font.png", "abcdefghijklmnopqrstuvwxyz?!. 1234567890", 1, 8, 10, 4);
-		tiles = new Tile[30][10];
-		for(int i = 0; i < 30; i++) {
-			for(int j = 0; j < 10; j++) {
+		xx = 50;
+		yy = 20;
+		tiles = new Tile[xx][yy];
+		for(int i = 0; i < xx; i++) {
+			for(int j = 0; j < yy; j++) {
 				Tile add = new Tile(Tile.GRASS);
 				if(Math.random() < 0.8) {
 					add.type = Tile.DIRT;
@@ -43,8 +46,8 @@ public class TitleScreen implements Drawable, KeyListener{
 		g.translate(-1 * Drawable.SCALE, -(4*9-1) * Drawable.SCALE);
 		
 		g.translate(0, GameScreen.height/2);		
-		for(int i = 0; i < 30; i++) {
-			for(int j = 0; j < 10; j++) {
+		for(int i = 0; i < xx; i++) {
+			for(int j = 0; j < yy; j++) {
 				int dx = i * Drawable.SCALE * Tile.WIDTH;
 				int dy = j * Drawable.SCALE * Tile.HEIGHT;
 				g.translate(dx, dy);

@@ -3,33 +3,60 @@ package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JComponent;
 
+import game.Button;
 import game.GameMap;
 import game.Player;
 
-public class GameScreen extends JComponent implements Runnable{
+public class GameScreen extends JComponent implements Runnable, MouseListener{
 	public static int width, height;
 	List<Drawable> sprites;
 	GameMap gm;
 	Window w;
+	
+	List<Button> buttons;
 	
 	boolean running;
 	
 	public GameScreen(Window w, int width, int height) {
 		this.w = w;
 		sprites = new LinkedList<Drawable>();
-		this.width = width;
-		this.height = height;
+		this.buttons = new ArrayList<Button>();
+		GameScreen.width = width;
+		GameScreen.height = height;
 		
 		Dimension s = new Dimension(width, height);
 		
 		this.setMinimumSize(s);
 		this.setMaximumSize(s);
 		this.setPreferredSize(s);
+		
+		String pre = "./res/tool";
+		String post = ".png";
+		String sel = "Selected";
+		
+		String[] tools = new String[]{"Hoe", "Sickle", "Bag", "Tree", "Hay", "Floor"};
+		String[] nPath = new String[6];
+		String[] sPath = new String[6];
+		
+		for(int i = 0; i < 6; i++) {
+			nPath[i] = pre+tools[i]+post;
+			sPath[i] = pre+tools[i]+sel+post;
+			Button b = new Button(nPath[i], sPath[i], 
+					(width/Drawable.SCALE), 
+					1, i);
+			b.x -= b.w + 2;
+			b.y += i*(b.h + 1);
+			this.buttons.add(b);
+		}
+		buttons.get(0).toggleSelect();
 		
 	}
 	
@@ -41,6 +68,11 @@ public class GameScreen extends JComponent implements Runnable{
 	public void play() {
 		sprites.clear();
 		GameMap add = new GameMap(30, 30);
+		List<Drawable> ds = add.getChar().hud;
+		for(int i = 0; i < buttons.size(); i++) {
+			Button b = buttons.get(i);
+			ds.add(b);
+		}
 		
 		addSprite(add);
 		addGameMap(add);
@@ -89,7 +121,6 @@ public class GameScreen extends JComponent implements Runnable{
 				}
 				Thread.sleep(timeSleep);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -98,6 +129,9 @@ public class GameScreen extends JComponent implements Runnable{
 	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.CYAN);
+		if(gm != null && gm.timeLeft < 100) {
+			g.setColor(Color.BLUE);
+		}
 		g.fillRect(0, 0, width, height);
 		if(gm != null) {
 			int dx = getChar().x * Drawable.SCALE - width/2 + 4*Drawable.SCALE;
@@ -112,6 +146,43 @@ public class GameScreen extends JComponent implements Runnable{
 				d.draw(g);
 			}
 		}
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(getChar() != null) {
+			Player p = getChar();
+			for(Button b : this.buttons) {
+				boolean hit = b.inside(e.getX(), e.getY());
+				if(hit) {
+					p.setTool(b.getData());
+				}
+			}
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 

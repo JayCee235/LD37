@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -24,7 +26,7 @@ public class Player implements Drawable, KeyListener {
 	
 	int cap = 0;
 	
-	int tool;
+	public int tool;
 	int maxTool = 5;
 	
 	public int health = 100;
@@ -40,6 +42,8 @@ public class Player implements Drawable, KeyListener {
 	
 	int facing;
 	
+	public List<Drawable> hud;
+	
 	public Player(String spritePath) {
 		this.x = 0;
 		this.y = 0;
@@ -48,6 +52,8 @@ public class Player implements Drawable, KeyListener {
 		tool = 0;
 		
 		facing  = 3;
+		
+		hud = new ArrayList<Drawable>();
 		
 		showCrops = false;
 		
@@ -123,6 +129,19 @@ public class Player implements Drawable, KeyListener {
 		t.type = type;
 	}
 	
+	public void setTool(int t) {
+		((Button) hud.get(tool)).toggleSelect();
+		tool = t;
+		while(tool < 0) {
+			tool += maxTool + 1;
+		}
+		while(tool > maxTool) {
+			tool -= maxTool + 1;
+		}
+		((Button) hud.get(tool)).toggleSelect();
+		
+	}
+	
 	@Override
 	public void draw(Graphics g) {
 		
@@ -182,6 +201,10 @@ public class Player implements Drawable, KeyListener {
 			}
 						
 			g.translate(0, -cropx*ff);
+		}
+		
+		for(Drawable d : hud) {
+			d.draw(g);
 		}
 		
 		
@@ -361,34 +384,13 @@ public class Player implements Drawable, KeyListener {
 			keysDown[code] = true;
 		}
 		if(code == KeyEvent.VK_J) {
-			tool--;
-			if(tool < 0) {
-				tool = maxTool;
-			}
+			setTool(tool - 1);
 		}
 		if(code == KeyEvent.VK_K) {
-			tool++;
-			if(tool > maxTool) {
-				tool = 0;
-			}
+			setTool(tool + 1);
 		}
 		if(code == KeyEvent.VK_L) {
 			showCrops = !showCrops;
-		}
-		if(code == KeyEvent.VK_Y) {
-			tool = 0;
-		}
-		if(code == KeyEvent.VK_U) {
-			tool = 1;
-		}
-		if(code == KeyEvent.VK_I) {
-			tool = 2;
-		}
-		if(code == KeyEvent.VK_O) {
-			tool = 3;
-		}
-		if(code == KeyEvent.VK_P) {
-			tool = 4;
 		}
 	}
 

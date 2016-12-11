@@ -37,6 +37,7 @@ public class Window {
 		this.frame.add(gs);
 		
 		this.frame.addKeyListener(gs.getChar());
+		gs.addMouseListener(gs);
 	}
 	
 	public void add(TitleScreen ts) {
