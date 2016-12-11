@@ -20,7 +20,7 @@ public class GameMap implements Drawable {
 	
 	public GameMap(int x, int y) {
 		
-		timeLeft = 300;
+		timeLeft = 10;
 		
 		snowPerTick = 1;
 		

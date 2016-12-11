@@ -27,7 +27,7 @@ public class Player implements Drawable, KeyListener {
 	int tool;
 	int maxTool = 5;
 	
-	int health = 100;
+	public int health = 100;
 	
 	int[] seeds;
 	int[] crops;
@@ -344,6 +344,9 @@ public class Player implements Drawable, KeyListener {
 		}
 		if(getTileOn().type == Tile.SNOW) {
 			health--;
+			if(health <= 0) {
+				
+			}
 		}
 		
 	}

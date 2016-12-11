@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import game.Tile;
 
 public class Window {
-	private JFrame frame;
+	JFrame frame;
 	GameScreen gs;
 	TitleScreen ts;
 	
@@ -25,6 +25,7 @@ public class Window {
 	}
 	
 	public void start() {
+		gs.running = false;
 		Thread gg = new Thread(gs);
 		gg.start();
 	}

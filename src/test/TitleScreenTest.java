@@ -21,6 +21,7 @@ public class TitleScreenTest {
 //		w.add(ts);
 		
 		w.display();
+		w.start();
 	}
 	
 }

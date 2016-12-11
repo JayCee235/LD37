@@ -38,6 +38,10 @@ public class TitleScreen implements Drawable, KeyListener{
 		g.translate(17*Drawable.SCALE, 17*Drawable.SCALE);
 		f.draw(g, "Harvest");
 		g.translate(-17*Drawable.SCALE, -17*Drawable.SCALE);
+		g.translate(1 * Drawable.SCALE, (4*9-1) * Drawable.SCALE);
+		f.draw(g, "Press any key to start");
+		g.translate(-1 * Drawable.SCALE, -(4*9-1) * Drawable.SCALE);
+		
 		g.translate(0, GameScreen.height/2);		
 		for(int i = 0; i < 30; i++) {
 			for(int j = 0; j < 10; j++) {
@@ -59,7 +63,6 @@ public class TitleScreen implements Drawable, KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println("pls");
 		w.gs.play();
 	}
 

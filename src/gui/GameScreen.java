@@ -17,6 +17,8 @@ public class GameScreen extends JComponent implements Runnable{
 	GameMap gm;
 	Window w;
 	
+	boolean running;
+	
 	public GameScreen(Window w, int width, int height) {
 		this.w = w;
 		sprites = new LinkedList<Drawable>();
@@ -37,7 +39,6 @@ public class GameScreen extends JComponent implements Runnable{
 	}
 	
 	public void play() {
-		System.out.println("Play");
 		sprites.clear();
 		GameMap add = new GameMap(30, 30);
 		
@@ -45,7 +46,7 @@ public class GameScreen extends JComponent implements Runnable{
 		addGameMap(add);
 		
 		w.add(this);
-		w.start();
+//		w.start();
 	}
 	
 	public void addGameMap(GameMap gm) {
@@ -61,9 +62,21 @@ public class GameScreen extends JComponent implements Runnable{
 	}
 	
 	public void run() {
-		while(true) {
+		running = true;
+		while(running) {
 			long time = System.currentTimeMillis();
-			if(this.gm != null) this.gm.tick();
+			if(this.gm != null) {
+				this.gm.tick();
+				if(getChar().health < 0) {
+					w.frame.removeKeyListener(getChar());
+					this.sprites.remove(gm);
+					this.gm = null;
+					TitleScreen ts = new TitleScreen(w);
+//					this.sprites.add(ts);
+//					w.frame.addKeyListener(ts);
+					w.add(ts);
+				}
+			}
 			this.repaint();
 			
 			long last = time;
