@@ -99,11 +99,14 @@ public class GameScreen extends JComponent implements Runnable, MouseListener{
 			long time = System.currentTimeMillis();
 			if(this.gm != null) {
 				this.gm.tick();
-				if(getChar().health < 0) {
+				Player c = getChar();
+				if(c.health < 0) {
+					int score = gm.score / 100;
 					w.frame.removeKeyListener(getChar());
 					this.sprites.remove(gm);
 					this.gm = null;
 					TitleScreen ts = new TitleScreen(w);
+					ts.score = score;
 //					this.sprites.add(ts);
 //					w.frame.addKeyListener(ts);
 					w.add(ts);

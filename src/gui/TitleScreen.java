@@ -12,6 +12,7 @@ public class TitleScreen implements Drawable, KeyListener{
 	Font f;
 	Window w;
 	int xx, yy;
+	int score;
 	
 	public int timer;
 	
@@ -50,7 +51,7 @@ public class TitleScreen implements Drawable, KeyListener{
 			g.translate(-1 * Drawable.SCALE, -(4*9-1) * Drawable.SCALE);
 		} else {
 			g.translate(1 * Drawable.SCALE, (4*9-1) * Drawable.SCALE);
-			f.draw(g, "Game Over...");
+			f.draw(g, "Game Over... score " + score);
 			g.translate(-1 * Drawable.SCALE, -(4*9-1) * Drawable.SCALE);
 		}
 		g.translate(0, GameScreen.height/2);		
