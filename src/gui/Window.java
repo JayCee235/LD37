@@ -2,6 +2,7 @@ package gui;
 import java.awt.Dimension;
 import java.awt.event.KeyListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import game.Tile;
@@ -16,6 +17,10 @@ public class Window {
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
+		
+		ImageIcon icon = new ImageIcon(this.getClass().getResource("/res/toolSickle.png"));
+		
+		frame.setIconImage(icon.getImage());
 	}
 	
 	public void display() {		
