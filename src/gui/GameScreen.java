@@ -109,6 +109,9 @@ public class GameScreen extends JComponent implements Runnable, MouseListener{
 					w.add(ts);
 				}
 			}
+			if(w.ts != null) {
+				w.ts.timer--;
+			}
 			this.repaint();
 			
 			long last = time;

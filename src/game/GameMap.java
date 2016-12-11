@@ -15,12 +15,14 @@ public class GameMap implements Drawable {
 	Font f;
 	
 	public int timeLeft;
+	public int score;
 	
 	int snowPerTick;
 	
 	public GameMap(int x, int y) {
 		
-		timeLeft = 6000;
+		timeLeft = 600;
+		score = 0;
 		
 		snowPerTick = 1;
 		
@@ -45,6 +47,7 @@ public class GameMap implements Drawable {
 
 	public void tick() {
 		if(timeLeft > 0) timeLeft--;
+		if(timeLeft < 100) score++;
 		if(timeLeft == 0) {
 			for(int i = 0; i < snowPerTick; i++) {
 				int rx = (int) (tiles.length * Math.random());

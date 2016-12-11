@@ -55,7 +55,7 @@ public class Player implements Drawable, KeyListener {
 		
 		hud = new ArrayList<Drawable>();
 		
-		showCrops = false;
+		showCrops = true;
 		
 		int cropType = 2;
 		seeds = new int[cropType];
@@ -191,7 +191,11 @@ public class Player implements Drawable, KeyListener {
 			gm.getFont().draw(g, "Logs " + crops[1]);
 			
 			g.translate(0, cropx);
-			gm.getFont().draw(g, "Time Left " + gm.timeLeft / 100);
+			if(gm.timeLeft > 99) {
+				gm.getFont().draw(g, "Time Left " + gm.timeLeft / 100);
+			} else {
+				gm.getFont().draw(g, "Score " + gm.score / 100);
+			}
 			
 			g.translate(0, cropx);
 			if(health <= 0) {
@@ -259,7 +263,7 @@ public class Player implements Drawable, KeyListener {
 	
 	public void tick() {
 		if(keysDown[KeyEvent.VK_W]) {
-			if (facing == 1) this.my--;
+			this.my--;
 			facing = 1;
 			if(my < -cap) {
 				my = 0;
@@ -268,7 +272,7 @@ public class Player implements Drawable, KeyListener {
 			}
 		}
 		if(keysDown[KeyEvent.VK_S]) {
-			if (facing == 3) this.my++;
+			this.my++;
 			facing = 3;
 			if(my > cap) {
 				my = 0;
@@ -277,7 +281,7 @@ public class Player implements Drawable, KeyListener {
 			}
 		}
 		if(keysDown[KeyEvent.VK_A]) {
-			if (facing == 0) this.mx++;
+			this.mx++;
 			facing = 0;
 			if(mx > cap) {
 				mx = 0;
@@ -286,7 +290,7 @@ public class Player implements Drawable, KeyListener {
 			}
 		}
 		if(keysDown[KeyEvent.VK_D]) {
-			if (facing == 2) this.mx--;
+			this.mx--;
 			facing = 2;
 			if(mx < -cap) {
 				mx = 0;
@@ -391,6 +395,24 @@ public class Player implements Drawable, KeyListener {
 		}
 		if(code == KeyEvent.VK_L) {
 			showCrops = !showCrops;
+		}
+		if(code == KeyEvent.VK_1) {
+			setTool(0);
+		}
+		if(code == KeyEvent.VK_2) {
+			setTool(1);
+		}
+		if(code == KeyEvent.VK_3) {
+			setTool(2);
+		}
+		if(code == KeyEvent.VK_4) {
+			setTool(3);
+		}
+		if(code == KeyEvent.VK_5) {
+			setTool(4);
+		}
+		if(code == KeyEvent.VK_6) {
+			setTool(5);
 		}
 	}
 

@@ -13,8 +13,11 @@ public class TitleScreen implements Drawable, KeyListener{
 	Window w;
 	int xx, yy;
 	
+	public int timer;
+	
 	public TitleScreen(Window w) {
 		this.w = w;
+		timer = 100;
 		f = new Font("./res/font.png", "abcdefghijklmnopqrstuvwxyz?!. 1234567890", 1, 8, 10, 4);
 		xx = 50;
 		yy = 20;
@@ -41,10 +44,15 @@ public class TitleScreen implements Drawable, KeyListener{
 		g.translate(17*Drawable.SCALE, 17*Drawable.SCALE);
 		f.draw(g, "Harvest");
 		g.translate(-17*Drawable.SCALE, -17*Drawable.SCALE);
-		g.translate(1 * Drawable.SCALE, (4*9-1) * Drawable.SCALE);
-		f.draw(g, "Press any key to start");
-		g.translate(-1 * Drawable.SCALE, -(4*9-1) * Drawable.SCALE);
-		
+		if(timer <= 0) {
+			g.translate(1 * Drawable.SCALE, (4*9-1) * Drawable.SCALE);
+			f.draw(g, "Press any key to start");
+			g.translate(-1 * Drawable.SCALE, -(4*9-1) * Drawable.SCALE);
+		} else {
+			g.translate(1 * Drawable.SCALE, (4*9-1) * Drawable.SCALE);
+			f.draw(g, "Game Over...");
+			g.translate(-1 * Drawable.SCALE, -(4*9-1) * Drawable.SCALE);
+		}
 		g.translate(0, GameScreen.height/2);		
 		for(int i = 0; i < xx; i++) {
 			for(int j = 0; j < yy; j++) {
@@ -66,7 +74,7 @@ public class TitleScreen implements Drawable, KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		w.gs.play();
+		if(timer <= 0) w.gs.play();
 	}
 
 	@Override

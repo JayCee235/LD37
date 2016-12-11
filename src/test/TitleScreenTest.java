@@ -13,6 +13,7 @@ public class TitleScreenTest {
 		GameScreen gs = new GameScreen(w, 1000, 800);
 		
 		TitleScreen ts = new TitleScreen(w);
+		ts.timer = 0;
 		
 //		gs.addSprite(ts);
 		
