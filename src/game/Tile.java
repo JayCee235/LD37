@@ -25,7 +25,7 @@ public class Tile implements Drawable{
 	public static final int TREE = 8;
 	public static final Image[] SPRITES = new Image[9];
 	
-	int type;
+	public int type;
 	int dmg;
 	
 	public Tile(int type) {
@@ -88,6 +88,10 @@ public class Tile implements Drawable{
 			
 			break;
 		case SNOW:
+			if(dmg > 50) {
+				dmg = 0;
+				type = DIRT;
+			}
 			break;
 		case FLOOR:
 			if(dmg > 0) {

@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 import gui.Drawable;
 import gui.GameScreen;
 
-public class Player implements Drawable, KeyListener, MouseListener{
+public class Player implements Drawable, KeyListener {
 	public int x, y, w, h;
 	int mx, my;
 	Image sprite;
@@ -294,6 +294,8 @@ public class Player implements Drawable, KeyListener, MouseListener{
 				} else if(getSelectedTile().type == Tile.FLOOR) {
 					setSelectedTile(Tile.DIRT);
 					crops[1] += 4;
+				} else if(getSelectedTile().type == Tile.SNOW) {
+					getSelectedTile().dmg++;
 				}
 			}
 			//Wheat
@@ -343,36 +345,6 @@ public class Player implements Drawable, KeyListener, MouseListener{
 		if(getTileOn().type == Tile.SNOW) {
 			health--;
 		}
-		
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 

@@ -16,9 +16,13 @@ public class GameMap implements Drawable {
 	
 	int timeLeft;
 	
+	int snowPerTick;
+	
 	public GameMap(int x, int y) {
 		
-		timeLeft = 3000;
+		timeLeft = 300;
+		
+		snowPerTick = 1;
 		
 		tiles = new Tile[x][y];
 		c = new Player("./res/testChar.png");
@@ -31,7 +35,8 @@ public class GameMap implements Drawable {
 				tiles[i][j] = new Tile(Tile.GRASS);
 			}
 		}
-		f = new Font("./res/font.png", "abcdefghijklmnopqrstuvwxyz?!. 1234567890", 1, 8, 10, 4);
+		f = new Font("./res/font.png", "abcdefghijklmnopqrstuvwxyz?!. 1234567890", 
+				1, 8, 10, 4);
 	}
 	
 	public Font getFont() {
@@ -41,20 +46,28 @@ public class GameMap implements Drawable {
 	public void tick() {
 		if(timeLeft > 0) timeLeft--;
 		if(timeLeft == 0) {
-			for(int i = 0; i < 5; i++) {
-			int rx = (int) (tiles.length * Math.random());
-			int ry = (int) (tiles[0].length * Math.random());
+			for(int i = 0; i < snowPerTick; i++) {
+				int rx = (int) (tiles.length * Math.random());
+				int ry = (int) (tiles[0].length * Math.random());
 			
-			Tile use = tiles[rx][ry];
-			if(use.isOutside()) {
-				use.type = Tile.SNOW;
-			} else {
-				if(rx == 0 || ry == 0 || rx == tiles.length-1 || ry == tiles[0].length-1 ||
-						tiles[rx-1][ry].isOutside() || tiles[rx+1][ry].isOutside() || tiles[rx][ry-1].isOutside() || tiles[rx][ry+1].isOutside()) {
-					use.dmg++;
+				Tile use = tiles[rx][ry];
+				if(use.isOutside()) {
+					if(use.type == Tile.SNOW || use.dmg > 0) {
+						use.dmg--;
+					} else {
+						use.type = Tile.SNOW;
+						use.dmg = 0;
+					}
+				} else {
+					if(rx == 0 || ry == 0 || rx == tiles.length-1 || ry == tiles[0].length-1 ||
+							tiles[rx-1][ry].isOutside() || tiles[rx+1][ry].isOutside() || tiles[rx][ry-1].isOutside() || tiles[rx][ry+1].isOutside()) {
+						use.dmg++;
+					}
 				}
 			}
 			timeLeft = 5;
+			if(Math.random() < 0.1/snowPerTick) {
+				snowPerTick++;
 			}
 		}
 		for(int i = 0; i < tiles.length; i++) {

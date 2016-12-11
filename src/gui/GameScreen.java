@@ -15,9 +15,10 @@ public class GameScreen extends JComponent implements Runnable{
 	public static int width, height;
 	List<Drawable> sprites;
 	GameMap gm;
+	Window w;
 	
-	
-	public GameScreen(int width, int height) {
+	public GameScreen(Window w, int width, int height) {
+		this.w = w;
 		sprites = new LinkedList<Drawable>();
 		this.width = width;
 		this.height = height;
@@ -31,11 +32,28 @@ public class GameScreen extends JComponent implements Runnable{
 	}
 	
 	public Player getChar() {
-		return this.gm.getChar();
+		if(gm != null) return this.gm.getChar();
+		return null;
+	}
+	
+	public void play() {
+		System.out.println("Play");
+		sprites.clear();
+		GameMap add = new GameMap(30, 30);
+		
+		addSprite(add);
+		addGameMap(add);
+		
+		w.add(this);
+		w.start();
 	}
 	
 	public void addGameMap(GameMap gm) {
 		this.gm = gm;
+	}
+	
+	public void addTitleScreen(TitleScreen ts) {
+		w.add(ts);
 	}
 	
 	public void addSprite(Drawable d) {
@@ -45,7 +63,7 @@ public class GameScreen extends JComponent implements Runnable{
 	public void run() {
 		while(true) {
 			long time = System.currentTimeMillis();
-			this.gm.tick();
+			if(this.gm != null) this.gm.tick();
 			this.repaint();
 			
 			long last = time;
@@ -66,17 +84,21 @@ public class GameScreen extends JComponent implements Runnable{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		int dx = getChar().x * Drawable.SCALE - width/2 + 4*Drawable.SCALE;
-		int dy = getChar().y * Drawable.SCALE - height/2 + 4*Drawable.SCALE;
 		g.setColor(Color.CYAN);
 		g.fillRect(0, 0, width, height);
-		g.translate(-dx, -dy);
-		for(Drawable d : sprites) {
-			d.draw(g);
+		if(gm != null) {
+			int dx = getChar().x * Drawable.SCALE - width/2 + 4*Drawable.SCALE;
+			int dy = getChar().y * Drawable.SCALE - height/2 + 4*Drawable.SCALE;
+			g.translate(-dx, -dy);
+			for(Drawable d : sprites) {
+				d.draw(g);
+			}
+			g.translate(dx, dy);
+		} else {
+			for(Drawable d : sprites) {
+				d.draw(g);
+			}
 		}
-		
-		g.translate(dx, dy);
-		
 		
 	}
 

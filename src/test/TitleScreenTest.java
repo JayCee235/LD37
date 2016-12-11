@@ -1,23 +1,26 @@
 package test;
 
-import game.GameMap;
 import game.Tile;
 import gui.GameScreen;
+import gui.TitleScreen;
 import gui.Window;
 
-public class GrassTileTest {
+public class TitleScreenTest {
+	
 	public static void main(String[] args) {
 		Tile.load();
-		Window w = new Window("test");
+		Window w = new Window("Test");
 		GameScreen gs = new GameScreen(w, 800, 600);
-		GameMap gm = new GameMap(30, 30);
 		
-		gs.addSprite(gm);
-		gs.addGameMap(gm);
+		TitleScreen ts = new TitleScreen(w);
+		
+//		gs.addSprite(ts);
 		
 		w.add(gs);
+		gs.addTitleScreen(ts);
+//		w.add(ts);
 		
 		w.display();
-		w.start();
 	}
+	
 }
