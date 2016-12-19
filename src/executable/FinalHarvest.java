@@ -1,5 +1,8 @@
 package executable;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import game.Tile;
 import gui.GameScreen;
 import gui.TitleScreen;
@@ -20,7 +23,9 @@ public class FinalHarvest {
 		
 		Tile.load();
 		Window w = new Window("Final Harvest");
-		GameScreen gs = new GameScreen(w, width, height);
+		Dimension s = Toolkit.getDefaultToolkit().getScreenSize();
+		GameScreen gs = new GameScreen(w, (int) s.getWidth(), (int) s.getHeight());
+		w.setBorderless(true);
 		
 		TitleScreen ts = new TitleScreen(w);
 		ts.timer = 0;

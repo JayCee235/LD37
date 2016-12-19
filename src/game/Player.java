@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JFrame;
 
 import audio.AudioPlayer;
 import gui.Drawable;
@@ -372,6 +374,10 @@ public class Player implements Drawable, KeyListener {
 		}
 		if(code == KeyEvent.VK_6) {
 			setTool(5);
+		}
+		if(code == KeyEvent.VK_ESCAPE) {
+			JFrame frame = (JFrame) e.getSource();
+			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		}
 	}
 

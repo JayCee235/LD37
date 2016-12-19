@@ -37,6 +37,10 @@ public class Window {
 		gg.start();
 	}
 	
+	public void close() {
+		this.frame.dispose();
+	}
+	
 	public void add(GameScreen gs) {
 		if(this.ts != null) this.frame.removeKeyListener(this.ts);
 		if(this.gs != null) this.frame.removeKeyListener(this.gs.getChar());
@@ -60,6 +64,10 @@ public class Window {
 
 	public void addListener(KeyListener ks) {
 		frame.addKeyListener(ks);
+	}
+	
+	public void setBorderless(boolean b) {
+		frame.setUndecorated(b);
 	}
 	
 	
